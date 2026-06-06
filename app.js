@@ -1,8 +1,6 @@
-/* ─────────────────────────────────────────────────────────────────
-   SaludYa – MVP Functional JS
-   ───────────────────────────────────────────────────────────────── */
+/* SaludYa – MVP  */
 
-/* ══ State ════════════════════════════════════════════════════════ */
+//  Estados 
 const state = {
   currentUser: null,
   currentPage: null,
@@ -10,16 +8,18 @@ const state = {
   selectedSlot: null,
 };
 
-/* ══ Mock Data ════════════════════════════════════════════════════ */
+/* Datos de muestra  */
 const USERS_DB = [
   { id: 1, name: 'María González', email: 'maria@mail.com', password: '123456', role: 'patient', phone: '3001234567', status: 'active', initials: 'MG' },
   { id: 2, name: 'Hugo Luna',       email: 'hugo@mail.com',  password: '123456', role: 'patient', phone: '3109876543', status: 'active', initials: 'HL' },
   { id: 3, name: 'Dra. M.F. Fandiño', email: 'mfandino@saludya.com', password: 'med123', role: 'doctor', specialty: 'Medicina General', phone: '3201112233', status: 'active', initials: 'MF' },
   { id: 4, name: 'Dr. Sergio Quintero', email: 'squintero@saludya.com', password: 'med123', role: 'doctor', specialty: 'Especialista', phone: '3154445566', status: 'active', initials: 'SQ' },
   { id: 5, name: 'Admin Sistema',   email: 'admin@saludya.com', password: 'admin123', role: 'admin', phone: '3000000001', status: 'active', initials: 'AS' },
+  { id: 6, name: 'Nicolas Luna',   email: 'Nicolas.luna@saludya.com', password: 'Luna123', role: 'admin', phone: '3000000002', status: 'active', initials: 'NL' },
+  { id: 7, name: 'Nicolas Reyes',   email: 'Nicolas.reyes@saludya.com', password: 'Reyes123', role: 'admin', phone: '3000000003', status: 'active', initials: 'NR' },
 ];
 
-// Store in localStorage for persistence
+// Almacenamiento en localStorage
 function loadDB() {
   const stored = localStorage.getItem('sy_users');
   if (stored) { try { return JSON.parse(stored); } catch(e) {} }
@@ -29,7 +29,7 @@ function loadDB() {
 function saveUsers(users) { localStorage.setItem('sy_users', JSON.stringify(users)); }
 function getUsers() { return loadDB(); }
 
-// Appointments
+// Citas
 function getAppointments() {
   const stored = localStorage.getItem('sy_appointments');
   if (stored) { try { return JSON.parse(stored); } catch(e) {} }
@@ -47,7 +47,7 @@ function getAppointments() {
 }
 function saveAppointments(apts) { localStorage.setItem('sy_appointments', JSON.stringify(apts)); }
 
-// Doctor schedules
+// Horarios médicos
 function getSchedules() {
   const stored = localStorage.getItem('sy_schedules');
   if (stored) { try { return JSON.parse(stored); } catch(e) {} }
@@ -60,7 +60,7 @@ function getSchedules() {
 }
 function saveSchedules(s) { localStorage.setItem('sy_schedules', JSON.stringify(s)); }
 
-/* ══ Auth ═════════════════════════════════════════════════════════ */
+// Auth  
 function tryLogin(email, password) {
   const users = getUsers();
   return users.find(u => u.email === email && u.password === password && u.status === 'active') || null;
@@ -76,7 +76,7 @@ function tryRegister({ name, lastName, email, phone, password }) {
   return { ok: true, user: newUser };
 }
 
-/* ══ Router ═══════════════════════════════════════════════════════ */
+// Enrutador
 function navigate(pageId) {
   if (!state.currentUser && !['login','register'].includes(pageId)) { showAuth('login'); return; }
   document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
@@ -90,7 +90,7 @@ function navigate(pageId) {
 
   state.currentPage = pageId;
 
-  // Page-specific init
+  // Iniciación de la pagina
   if (pageId === 'dashboard') initDashboard();
   if (pageId === 'appointments') initAppointments();
   if (pageId === 'schedule') initSchedule();
@@ -113,7 +113,7 @@ function enterApp() {
   navigate('dashboard');
 }
 
-/* ══ Sidebar ══════════════════════════════════════════════════════ */
+//  Sidebar
 function buildSidebar() {
   const u = state.currentUser;
   document.getElementById('sb-user-name').textContent = u.name;
@@ -188,7 +188,7 @@ function countActivePtApts() {
   return apts.length || null;
 }
 
-/* ══ Dashboard ════════════════════════════════════════════════════ */
+// Dashboard
 function initDashboard() {
   const u = state.currentUser;
   const role = u.role;
@@ -258,7 +258,7 @@ function initDashboard() {
   }
 }
 
-/* ══ Book Appointment ═════════════════════════════════════════════ */
+// Reservar cita 
 function initBookPage() {
   const users = getUsers();
   const doctors = users.filter(u2 => u2.role === 'doctor');
@@ -426,7 +426,7 @@ function confirmBooking() {
   setTimeout(() => navigate('appointments'), 800);
 }
 
-/* ══ Appointments Page ════════════════════════════════════════════ */
+// Pagina de citas
 let aptFilter = 'upcoming';
 function initAppointments() {
   renderAppointments();
@@ -503,7 +503,7 @@ function doCancelAppointment() {
   buildSidebar();
 }
 
-/* ══ Doctor Schedule ══════════════════════════════════════════════ */
+// Horario médico
 const DAYS = ['Mon','Tue','Wed','Thu','Fri','Sat','Sun'];
 const DAY_LABELS = { Mon:'Lunes',Tue:'Martes',Wed:'Miércoles',Thu:'Jueves',Fri:'Viernes',Sat:'Sábado',Sun:'Domingo' };
 
@@ -582,7 +582,7 @@ function doAddSlot() {
   toast(`Horario ${time} añadido para ${DAY_LABELS[day]}`, 'success');
 }
 
-/* ══ Admin Users ══════════════════════════════════════════════════ */
+// Admin usuarios
 function initAdminUsers() {
   renderUsersTable('');
   document.getElementById('user-search').addEventListener('input', e => renderUsersTable(e.target.value));
@@ -627,7 +627,7 @@ function renderUsersTable(query) {
   });
 }
 
-/* ══ Profile ══════════════════════════════════════════════════════ */
+// Perfiles 
 function initProfile() {
   const u = state.currentUser;
   document.getElementById('profile-name').value = u.name;
@@ -637,11 +637,11 @@ function initProfile() {
   document.getElementById('profile-initials').textContent = u.initials || u.name.slice(0,2).toUpperCase();
 }
 
-/* ══ Modals ═══════════════════════════════════════════════════════ */
+// Modals 
 function openModal(id) { document.getElementById(id).classList.add('open'); }
 function closeModal(id) { document.getElementById(id).classList.remove('open'); }
 
-/* ══ Toast ════════════════════════════════════════════════════════ */
+// Toast 
 function toast(msg, type='info') {
   const icons = { success:'✓', error:'✕', info:'ℹ' };
   const el = document.createElement('div');
@@ -651,7 +651,7 @@ function toast(msg, type='info') {
   setTimeout(() => el.remove(), 3500);
 }
 
-/* ══ Helpers ══════════════════════════════════════════════════════ */
+// Helpers 
 function todayStr() { return fmtDate(new Date()); }
 function fmtDate(d) { return `${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,'0')}-${String(d.getDate()).padStart(2,'0')}`; }
 function formatDate(str) {
@@ -662,7 +662,7 @@ function formatDate(str) {
 }
 function capitalize(s) { return s ? s.charAt(0).toUpperCase() + s.slice(1) : ''; }
 
-/* ══ Password Strength ═══════════════════════════════════════════ */
+// Fortaleza de contraseñas 
 function calcStrength(pw) {
   let score = 0;
   if (pw.length >= 8) score++;
@@ -672,7 +672,7 @@ function calcStrength(pw) {
   return score;
 }
 
-/* ══ DOM Init ════════════════════════════════════════════════════ */
+// DOM js 
 document.addEventListener('DOMContentLoaded', () => {
   // ── Login Form ──────────────────────────────────────────────────
   document.getElementById('login-form').addEventListener('submit', e => {
@@ -698,7 +698,7 @@ document.addEventListener('DOMContentLoaded', () => {
     document.getElementById('login-password').classList.remove('error');
   });
 
-  // ── Register Form ────────────────────────────────────────────────
+  // Formulario de registro 
   document.getElementById('register-form').addEventListener('submit', e => {
     e.preventDefault();
     const name = document.getElementById('reg-name').value.trim();
@@ -721,7 +721,7 @@ document.addEventListener('DOMContentLoaded', () => {
     document.getElementById('login-email').value = email;
   });
 
-  // Password strength meter
+  // Medidor de contraseña
   document.getElementById('reg-password')?.addEventListener('input', e => {
     const score = calcStrength(e.target.value);
     const fill = document.getElementById('strength-fill');
@@ -729,7 +729,7 @@ document.addEventListener('DOMContentLoaded', () => {
     if (fill) { fill.style.width = (score * 25) + '%'; fill.style.background = colors[score]; }
   });
 
-  // Password visibility toggles
+  // Mostrar - ocultar pass
   document.querySelectorAll('.password-toggle').forEach(btn => {
     btn.addEventListener('click', () => {
       const input = btn.previousElementSibling;
@@ -738,7 +738,7 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   });
 
-  // Auth nav links
+  // Enlaces de navegación autenticacion
   document.getElementById('go-register').addEventListener('click', (e) => {
     e.preventDefault();
     showAuth('register');
@@ -748,14 +748,14 @@ document.addEventListener('DOMContentLoaded', () => {
     showAuth('login');
   });
 
-  // Logout
+  // Cerrar sesión
   document.getElementById('logout-btn').addEventListener('click', () => {
     state.currentUser = null;
     showAuth('login');
     document.getElementById('login-form').reset();
   });
 
-  // Navigation del Calendario
+  // Paginación del Calendario
   document.getElementById('cal-prev')?.addEventListener('click', () => { 
     calOffset--; 
     renderCalendar(); 
@@ -778,17 +778,17 @@ document.addEventListener('DOMContentLoaded', () => {
   document.getElementById('do-cancel-apt')?.addEventListener('click', doCancelAppointment);
   document.getElementById('do-add-slot')?.addEventListener('click', doAddSlot);
 
-  // Close modals on overlay click
+  // Cerrar modales clic en superposición
   document.querySelectorAll('.modal-overlay').forEach(overlay => {
     overlay.addEventListener('click', e => { if (e.target === overlay) overlay.classList.remove('open'); });
   });
 
-  // Close modal buttons
+  // Botones para cerrar modales
   document.querySelectorAll('.modal-close').forEach(btn => {
     btn.addEventListener('click', () => btn.closest('.modal-overlay').classList.remove('open'));
   });
 
-  // Profile save
+  // Guardar perfil
   document.getElementById('save-profile-btn')?.addEventListener('click', () => {
     const name = document.getElementById('profile-name').value.trim();
     const phone = document.getElementById('profile-phone').value.trim();
@@ -803,9 +803,9 @@ document.addEventListener('DOMContentLoaded', () => {
     }
   });
 
-  // Help page nav
+  // Navegación pagina de ayuda
   document.getElementById('nav-help')?.addEventListener('click', () => navigate('help'));
 
-  // Init: show login
+  // Inicio: mostrar login
   showAuth('login');
 });
