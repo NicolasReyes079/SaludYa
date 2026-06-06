@@ -1,0 +1,466 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>SaludYa – Sistema de Gestión de Citas</title>
+  <link rel="stylesheet" href="styles.css" />
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🏥</text></svg>"/>
+</head>
+<body>
+
+<!-- ══ AUTH VIEW ════════════════════════════════════════════════ -->
+<div id="auth-view" class="auth-wrapper">
+
+  <!-- Brand Panel -->
+  <div class="auth-brand">
+    <div class="brand-content">
+      <div class="brand-logo">
+        <div class="brand-icon">🏥</div>
+        <span class="brand-name">SaludYa</span>
+      </div>
+      <p class="brand-tagline">Sistema de gestión de citas médicas</p>
+      <div class="brand-features">
+        <div class="brand-feature"><span>📅</span><span>Agenda tu cita en minutos, sin llamadas</span></div>
+        <div class="brand-feature"><span>🔔</span><span>Disponibilidad actualizada en tiempo real</span></div>
+        <div class="brand-feature"><span>👩‍⚕️</span><span>Médicos especializados a tu servicio</span></div>
+        <div class="brand-feature"><span>🔒</span><span>Tu información, segura y protegida</span></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Login -->
+  <div class="auth-form-side" id="login-section">
+    <div class="auth-box">
+      <h1>Bienvenido de nuevo</h1>
+      <p class="auth-subtitle">Ingresa tus credenciales para acceder a tu cuenta.</p>
+
+      <div class="alert alert-info" style="font-size:13px;margin-bottom:20px">
+        <div>
+          <strong>Cuentas de demostración:</strong><br>
+          Paciente: <code>maria@mail.com</code> / <code>123456</code><br>
+          Médico: <code>mfandino@saludya.com</code> / <code>med123</code><br>
+          Admin: <code>admin@saludya.com</code> / <code>admin123</code>
+        </div>
+      </div>
+
+      <form id="login-form" novalidate>
+        <div class="form-group">
+          <label for="login-email">Correo electrónico</label>
+          <input class="form-control" type="email" id="login-email" placeholder="Ej. maria@correo.com" required autocomplete="email" />
+        </div>
+        <div class="form-group">
+          <label for="login-password">Contraseña</label>
+          <div class="password-field">
+            <input class="form-control" type="password" id="login-password" placeholder="Tu contraseña" required autocomplete="current-password" />
+            <button type="button" class="password-toggle">👁</button>
+          </div>
+        </div>
+
+        <div id="login-error" class="alert alert-error hidden">
+          ✕ Credenciales incorrectas. Verifica tu correo y contraseña.
+        </div>
+
+        <button type="submit" class="btn btn-primary btn-full" style="margin-top:4px">
+          Iniciar sesión →
+        </button>
+      </form>
+
+      <p class="text-center text-sm text-muted mt-4">
+        ¿No tienes cuenta?
+        <a href="#" id="go-register" style="color:var(--primary);font-weight:500"> Regístrate aquí</a>
+      </p>
+    </div>
+  </div>
+
+  <!-- Register -->
+  <div class="auth-form-side hidden" id="register-section">
+    <div class="auth-box">
+      <h1>Crear cuenta</h1>
+      <p class="auth-subtitle">Completa los datos para registrarte como paciente.</p>
+
+      <form id="register-form" novalidate>
+        <div class="form-row">
+          <div class="form-group">
+            <label for="reg-name">Nombres</label>
+            <input class="form-control" type="text" id="reg-name" placeholder="Ej. María" required />
+          </div>
+          <div class="form-group">
+            <label for="reg-lastname">Apellidos</label>
+            <input class="form-control" type="text" id="reg-lastname" placeholder="Ej. González" required />
+          </div>
+        </div>
+        <div class="form-group">
+          <label for="reg-email">Correo electrónico</label>
+          <input class="form-control" type="email" id="reg-email" placeholder="ejemplo@correo.com" required />
+        </div>
+        <div class="form-group">
+          <label for="reg-phone">Teléfono</label>
+          <input class="form-control" type="tel" id="reg-phone" placeholder="3001234567" />
+        </div>
+        <div class="form-group">
+          <label for="reg-password">Contraseña</label>
+          <div class="password-field">
+            <input class="form-control" type="password" id="reg-password" placeholder="Mínimo 6 caracteres" required />
+            <button type="button" class="password-toggle">👁</button>
+          </div>
+          <div class="strength-bar mt-2"><div class="strength-fill" id="strength-fill"></div></div>
+        </div>
+        <div class="form-group">
+          <label for="reg-confirm">Confirmar contraseña</label>
+          <div class="password-field">
+            <input class="form-control" type="password" id="reg-confirm" placeholder="Repite la contraseña" required />
+            <button type="button" class="password-toggle">👁</button>
+          </div>
+        </div>
+
+        <div id="reg-error" class="alert alert-error hidden"></div>
+
+        <button type="submit" class="btn btn-primary btn-full">Registrarme</button>
+      </form>
+
+      <p class="text-center text-sm text-muted mt-4">
+        ¿Ya tienes cuenta?
+        <a href="#" id="go-login" style="color:var(--primary);font-weight:500"> Inicia sesión</a>
+      </p>
+    </div>
+  </div>
+</div><!-- /auth-view -->
+
+
+<!-- ══ APP VIEW ══════════════════════════════════════════════════ -->
+<div id="app-view" class="app-layout" style="display:none">
+
+  <!-- Sidebar -->
+  <aside class="sidebar" id="sidebar">
+    <div class="sidebar-logo">
+      <div class="logo-icon">🏥</div>
+      <div>
+        <div class="logo-text">SaludYa</div>
+        <div class="logo-sub">Sistema de citas</div>
+      </div>
+    </div>
+
+    <nav class="sidebar-nav" id="sidebar-nav"></nav>
+
+    <div class="sidebar-user">
+      <div class="user-card">
+        <div class="user-avatar" id="sb-user-initials">US</div>
+        <div>
+          <div class="user-name" id="sb-user-name">Usuario</div>
+          <div class="user-role" id="sb-user-role">Paciente</div>
+        </div>
+      </div>
+      <button class="btn-logout" id="logout-btn">
+        <span>↩</span> Cerrar sesión
+      </button>
+    </div>
+  </aside>
+
+  <!-- Main -->
+  <main class="main-content">
+
+    <!-- ─ Dashboard ─────────────────────────────────────────────── -->
+    <div class="page" id="page-dashboard">
+      <div class="page-header">
+        <h1 class="page-title" id="dash-greeting">Bienvenido</h1>
+        <p class="page-subtitle" id="dash-subtitle"></p>
+      </div>
+
+      <div class="stats-grid">
+        <div class="stat-card">
+          <div class="stat-header">
+            <div class="stat-icon green">📅</div>
+          </div>
+          <div class="card-title">Próxima cita</div>
+          <div id="stat-next"><div class="card-meta">—</div></div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-header">
+            <div class="stat-icon blue">🕐</div>
+          </div>
+          <div class="card-title">Citas activas</div>
+          <div id="stat-total"><div class="card-meta">—</div></div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-header">
+            <div class="stat-icon orange">📋</div>
+          </div>
+          <div class="card-title">Historial</div>
+          <div id="stat-hist"><div class="card-meta">—</div></div>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="flex-between mb-4">
+          <h2 class="card-title" style="font-size:16px">Citas próximas</h2>
+        </div>
+        <div id="dash-recent"></div>
+      </div>
+    </div>
+
+    <!-- ─ Book Appointment ───────────────────────────────────────── -->
+    <div class="page" id="page-book">
+      <div class="page-header">
+        <h1 class="page-title">Agendar Cita</h1>
+        <p class="page-subtitle">Selecciona médico, fecha y horario disponible.</p>
+      </div>
+
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:20px;align-items:start">
+
+        <div>
+          <!-- Doctor select -->
+          <div class="card mb-6">
+            <div class="card-title mb-4" style="margin-bottom:12px">1. Selecciona el médico</div>
+            <div class="form-group" style="margin:0">
+              <select class="form-control" id="book-doctor-select">
+                <option value="">— Selecciona un médico —</option>
+              </select>
+            </div>
+          </div>
+
+          <!-- Calendar -->
+          <div class="calendar-wrapper">
+            <div class="calendar-header">
+              <button class="cal-nav-btn" id="cal-prev">‹</button>
+              <span class="calendar-title" id="cal-month-label"></span>
+              <button class="cal-nav-btn" id="cal-next">›</button>
+            </div>
+            <div class="calendar-grid">
+              <div class="cal-day-name">Dom</div>
+              <div class="cal-day-name">Lun</div>
+              <div class="cal-day-name">Mar</div>
+              <div class="cal-day-name">Mié</div>
+              <div class="cal-day-name">Jue</div>
+              <div class="cal-day-name">Vie</div>
+              <div class="cal-day-name">Sáb</div>
+              <div id="cal-days" style="display:contents"></div>
+            </div>
+            <p class="text-sm text-muted mt-2" style="font-size:12px">● Días con disponibilidad</p>
+          </div>
+        </div>
+
+        <div>
+          <!-- Slots -->
+          <div class="card hidden" id="slots-section">
+            <div class="slots-title" id="slots-title">Horarios disponibles</div>
+            <div class="slots-grid" id="slots-container"></div>
+          </div>
+
+          <!-- Confirm -->
+          <div class="card" style="margin-top:16px" id="book-confirm-card">
+            <div class="card-title mb-4" style="margin-bottom:12px">Confirmar reserva</div>
+            <p class="text-sm text-muted" style="margin-bottom:14px">Selecciona una fecha y horario para continuar.</p>
+            <button class="btn btn-primary btn-full" id="confirm-book-btn" disabled>
+              📅 Confirmar cita
+            </button>
+          </div>
+        </div>
+
+      </div>
+    </div>
+
+    <!-- ─ Appointments ───────────────────────────────────────────── -->
+    <div class="page" id="page-appointments">
+      <div class="page-header">
+        <h1 class="page-title">Mis Citas</h1>
+        <p class="page-subtitle">Gestiona y consulta tus citas médicas.</p>
+      </div>
+
+      <div class="tabs" id="apt-tabs">
+        <button class="tab-btn active" data-filter="upcoming">Próximas</button>
+        <button class="tab-btn" data-filter="past">Pasadas</button>
+        <button class="tab-btn" data-filter="cancelled">Canceladas</button>
+      </div>
+
+      <div class="appointments-list" id="apt-list"></div>
+    </div>
+
+    <!-- ─ Doctor Schedule ────────────────────────────────────────── -->
+    <div class="page" id="page-schedule">
+      <div class="page-header flex-between">
+        <div>
+          <h1 class="page-title">Mi Agenda</h1>
+          <p class="page-subtitle">Define tus horarios disponibles por día.</p>
+        </div>
+        <button class="btn btn-primary" id="save-schedule-btn">💾 Guardar cambios</button>
+      </div>
+
+      <div class="card" style="overflow-x:auto">
+        <div class="schedule-grid" id="schedule-grid"></div>
+      </div>
+
+      <div class="alert alert-info mt-4">
+        ℹ️ Los cambios se reflejan inmediatamente para los pacientes al buscar disponibilidad.
+      </div>
+    </div>
+
+    <!-- ─ Admin Users ─────────────────────────────────────────────── -->
+    <div class="page" id="page-users">
+      <div class="page-header flex-between">
+        <div>
+          <h1 class="page-title">Gestión de Usuarios</h1>
+          <p class="page-subtitle">Administra las cuentas del sistema.</p>
+        </div>
+      </div>
+
+      <div class="search-bar">
+        <span class="search-icon">🔍</span>
+        <input type="text" id="user-search" placeholder="Buscar por nombre o correo…" />
+      </div>
+
+      <div class="table-wrap">
+        <table class="data-table">
+          <thead>
+            <tr>
+              <th>Usuario</th>
+              <th>Rol</th>
+              <th>Teléfono</th>
+              <th>Estado</th>
+              <th>Acciones</th>
+            </tr>
+          </thead>
+          <tbody id="users-tbody"></tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- ─ Profile ────────────────────────────────────────────────── -->
+    <div class="page" id="page-profile">
+      <div class="page-header">
+        <h1 class="page-title">Mi Perfil</h1>
+        <p class="page-subtitle">Actualiza tu información personal.</p>
+      </div>
+
+      <div class="card" style="max-width:520px">
+        <div style="display:flex;align-items:center;gap:16px;margin-bottom:24px">
+          <div class="user-avatar" id="profile-initials" style="width:60px;height:60px;font-size:22px;background:var(--primary)"></div>
+          <div>
+            <div style="font-size:18px;font-weight:700" id="profile-name-display"></div>
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label>Nombre completo</label>
+          <input class="form-control" type="text" id="profile-name" />
+        </div>
+        <div class="form-group">
+          <label>Correo electrónico</label>
+          <input class="form-control" type="email" id="profile-email" disabled style="background:var(--surface);color:var(--neutral)" />
+          <p class="form-error" style="color:var(--neutral)">El correo no se puede cambiar.</p>
+        </div>
+        <div class="form-group">
+          <label>Teléfono</label>
+          <input class="form-control" type="tel" id="profile-phone" />
+        </div>
+        <div class="form-group">
+          <label>Rol en el sistema</label>
+          <input class="form-control" type="text" id="profile-role" disabled style="background:var(--surface);color:var(--neutral)" />
+        </div>
+
+        <button class="btn btn-primary" id="save-profile-btn">Guardar cambios</button>
+      </div>
+    </div>
+
+    <!-- ─ Help ───────────────────────────────────────────────────── -->
+    <div class="page" id="page-help">
+      <div class="page-header">
+        <h1 class="page-title">Ayuda</h1>
+        <p class="page-subtitle">Guía de uso del sistema SaludYa.</p>
+      </div>
+      <div class="card" style="max-width:640px">
+        <h3 style="font-size:16px;font-weight:600;margin-bottom:12px">¿Cómo agendar una cita?</h3>
+        <ol style="padding-left:20px;color:var(--neutral);font-size:14px;line-height:2">
+          <li>Ve a <strong>Agendar cita</strong> en el menú lateral.</li>
+          <li>Selecciona el médico de tu preferencia.</li>
+          <li>Elige una fecha disponible en el calendario (marcada con ●).</li>
+          <li>Selecciona un horario libre.</li>
+          <li>Haz clic en <strong>Confirmar cita</strong> y acepta en el modal.</li>
+        </ol>
+        <hr class="section-divider" />
+        <h3 style="font-size:16px;font-weight:600;margin-bottom:12px">¿Cómo cancelar una cita?</h3>
+        <p style="font-size:14px;color:var(--neutral)">Ve a <strong>Mis citas</strong>, encuentra la cita activa y haz clic en el botón rojo <strong>✕ Cancelar</strong>. El espacio quedará disponible nuevamente.</p>
+        <hr class="section-divider" />
+        <h3 style="font-size:16px;font-weight:600;margin-bottom:12px">Cuentas de acceso</h3>
+        <div style="font-size:13px;background:var(--surface);border-radius:8px;padding:14px;line-height:2.2">
+          <div>👩 Paciente 1: <code>maria@mail.com</code> / <code>123456</code></div>
+          <div>👨 Paciente 2: <code>hugo@mail.com</code> / <code>123456</code></div>
+          <div>👩‍⚕️ Médico 1: <code>mfandino@saludya.com</code> / <code>med123</code></div>
+          <div>👨‍⚕️ Médico 2: <code>squintero@saludya.com</code> / <code>med123</code></div>
+          <div>🔐 Admin: <code>admin@saludya.com</code> / <code>admin123</code></div>
+        </div>
+      </div>
+    </div>
+
+  </main><!-- /main-content -->
+</div><!-- /app-view -->
+
+
+<!-- ══ MODALS ════════════════════════════════════════════════════ -->
+
+<!-- Booking Confirmation -->
+<div class="modal-overlay" id="booking-modal">
+  <div class="modal">
+    <div class="modal-header">
+      <h2 class="modal-title">Confirmar reserva</h2>
+      <button class="modal-close">✕</button>
+    </div>
+    <div class="modal-summary">
+      <div class="modal-row"><span class="label">Médico</span><span class="value" id="modal-doc">—</span></div>
+      <div class="modal-row"><span class="label">Especialidad</span><span class="value" id="modal-specialty">—</span></div>
+      <div class="modal-row"><span class="label">Fecha</span><span class="value" id="modal-date">—</span></div>
+      <div class="modal-row"><span class="label">Hora</span><span class="value" id="modal-time">—</span></div>
+    </div>
+    <p class="text-sm text-muted" style="margin-bottom:20px">¿Confirmas esta reserva? El espacio quedará bloqueado para otros pacientes.</p>
+    <div class="modal-actions">
+      <button class="btn btn-secondary modal-close">Cancelar</button>
+      <button class="btn btn-primary" id="do-confirm-book">✓ Confirmar cita</button>
+    </div>
+  </div>
+</div>
+
+<!-- Cancel Appointment -->
+<div class="modal-overlay" id="cancel-modal">
+  <div class="modal">
+    <div class="modal-header">
+      <h2 class="modal-title">Cancelar cita</h2>
+      <button class="modal-close">✕</button>
+    </div>
+    <p style="margin-bottom:20px;color:var(--neutral);font-size:14px">¿Estás seguro de que deseas cancelar esta cita? El espacio quedará disponible nuevamente.</p>
+    <input type="hidden" id="cancel-apt-id" />
+    <div class="modal-actions">
+      <button class="btn btn-secondary modal-close">Volver</button>
+      <button class="btn btn-danger" id="do-cancel-apt">✕ Sí, cancelar</button>
+    </div>
+  </div>
+</div>
+
+<!-- Add Slot (Doctor) -->
+<div class="modal-overlay" id="add-slot-modal">
+  <div class="modal">
+    <div class="modal-header">
+      <h2 class="modal-title">Agregar horario</h2>
+      <button class="modal-close">✕</button>
+    </div>
+    <input type="hidden" id="add-slot-day" />
+    <div class="form-group">
+      <label>Día seleccionado</label>
+      <input class="form-control" type="text" id="add-slot-day-label" disabled style="background:var(--surface)" />
+    </div>
+    <div class="form-group">
+      <label>Hora de inicio</label>
+      <input class="form-control" type="time" id="slot-time-input" value="09:00" step="1800" />
+    </div>
+    <div class="modal-actions">
+      <button class="btn btn-secondary modal-close">Cancelar</button>
+      <button class="btn btn-primary" id="do-add-slot">+ Agregar horario</button>
+    </div>
+  </div>
+</div>
+
+<!-- Toast Container -->
+<div id="toast-container"></div>
+
+<script src="app.js"></script>
+</body>
+</html>
