@@ -145,12 +145,12 @@ Encargada de renderizar interfaces visuales utilizando HTML y CSS.
 
 Implementada en JavaScript para manejar:
 
-* autenticación,
-* navegación,
-* gestión de usuarios,
-* agenda médica,
-* validaciones,
-* almacenamiento local.
+* autenticación
+* navegación
+* gestión de usuarios
+* agenda médica
+* validaciones
+* almacenamiento local
 
 ### Capa de persistencia
 
