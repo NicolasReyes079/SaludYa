@@ -198,5 +198,5 @@ Este proyecto fue desarrollado como parte de un proceso académico enfocado en l
 - **Nicolas Andres Reyes Suarez**
 - **Nicolas Luna Llanos**
 
-**Analisis y diseño de Software**
+**Analisis y diseño de Software** - 
 Proyecto académico – SaludYa
