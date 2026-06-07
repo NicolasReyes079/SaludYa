@@ -9,132 +9,134 @@
 </head>
 <body>
 
-<!-- ══ AUTH VIEW ════════════════════════════════════════════════ -->
-<div id="auth-view" class="auth-wrapper">
+<!-- Vista de autenticación -->
+<div id="auth-view" class="auth-page">
 
-  <!-- Brand Panel -->
-  <div class="auth-brand">
-    <div class="brand-content">
-      <div class="brand-logo">
-        <div class="brand-icon">🏥</div>
-        <span class="brand-name">SaludYa</span>
-      </div>
-      <p class="brand-tagline">Sistema de gestión de citas médicas</p>
-      <div class="brand-features">
-        <div class="brand-feature"><span>📅</span><span>Agenda tu cita en minutos, sin llamadas</span></div>
-        <div class="brand-feature"><span>🔔</span><span>Disponibilidad actualizada en tiempo real</span></div>
-        <div class="brand-feature"><span>👩‍⚕️</span><span>Médicos especializados a tu servicio</span></div>
-        <div class="brand-feature"><span>🔒</span><span>Tu información, segura y protegida</span></div>
-      </div>
+  <!-- Navbar global -->
+  <header class="global-navbar">
+    <div class="navbar-brand">
+      <div class="brand-icon">
+  <i data-lucide="hospital"></i>
+</div>
+      <span class="brand-name">SaludYa</span>
     </div>
-  </div>
+  </header>
 
-  <!-- Login -->
-  <div class="auth-form-side" id="login-section">
-    <div class="auth-box">
-      <h1>Bienvenido de nuevo</h1>
-      <p class="auth-subtitle">Ingresa tus credenciales para acceder a tu cuenta.</p>
+    <!-- Contenedor auth -->
+    <div class="auth-container">
 
-      <div class="alert alert-info" style="font-size:13px;margin-bottom:20px">
-        <div>
-          <strong>Cuentas de demostración:</strong><br>
-          Paciente: <code>maria@mail.com</code> / <code>123456</code><br>
-          Médico: <code>mfandino@saludya.com</code> / <code>med123</code><br>
-          Admin: <code>admin@saludya.com</code> / <code>admin123</code>
-        </div>
-      </div>
+    <!-- Login -->
+    <div class="auth-form-side" id="login-section">
+      <div class="auth-box">
+        <h1>Bienvenido de nuevo</h1>
+        <p class="auth-subtitle">Ingresa tus credenciales para acceder a tu cuenta.</p>
 
-      <form id="login-form" novalidate>
-        <div class="form-group">
-          <label for="login-email">Correo electrónico</label>
-          <input class="form-control" type="email" id="login-email" placeholder="Ej. maria@correo.com" required autocomplete="email" />
-        </div>
-        <div class="form-group">
-          <label for="login-password">Contraseña</label>
-          <div class="password-field">
-            <input class="form-control" type="password" id="login-password" placeholder="Tu contraseña" required autocomplete="current-password" />
-            <button type="button" class="password-toggle">👁</button>
+        <div class="alert alert-info" style="font-size:13px;margin-bottom:20px">
+          <div>
+            <strong>Cuentas de demostración:</strong><br>
+            Paciente: <code>maria@correo.com</code> / <code>123456</code><br>
+            Médico: <code>mfandino@saludya.com</code> / <code>med123</code><br>
+            Admin: <code>admin@saludya.com</code> / <code>admin123</code>
           </div>
         </div>
 
-        <div id="login-error" class="alert alert-error hidden">
-          ✕ Credenciales incorrectas. Verifica tu correo y contraseña.
-        </div>
-
-        <button type="submit" class="btn btn-primary btn-full" style="margin-top:4px">
-          Iniciar sesión →
-        </button>
-      </form>
-
-      <p class="text-center text-sm text-muted mt-4">
-        ¿No tienes cuenta?
-        <a href="#" id="go-register" style="color:var(--primary);font-weight:500"> Regístrate aquí</a>
-      </p>
-    </div>
-  </div>
-
-  <!-- Register -->
-  <div class="auth-form-side hidden" id="register-section">
-    <div class="auth-box">
-      <h1>Crear cuenta</h1>
-      <p class="auth-subtitle">Completa los datos para registrarte como paciente.</p>
-
-      <form id="register-form" novalidate>
-        <div class="form-row">
+        <form id="login-form" novalidate>
           <div class="form-group">
-            <label for="reg-name">Nombres</label>
-            <input class="form-control" type="text" id="reg-name" placeholder="Ej. María" required />
+            <label for="login-email">Correo electrónico</label>
+            <input class="form-control" type="email" id="login-email" placeholder="Ej. maria@correo.com" required autocomplete="email" />
           </div>
           <div class="form-group">
-            <label for="reg-lastname">Apellidos</label>
-            <input class="form-control" type="text" id="reg-lastname" placeholder="Ej. González" required />
+            <label for="login-password">Contraseña</label>
+            <div class="password-field">
+              <input class="form-control" type="password" id="login-password" placeholder="Tu contraseña" required autocomplete="current-password" />
+              <button type="button" class="password-toggle">
+                <i data-lucide="eye"></i>
+              </button>
+            </div>
           </div>
-        </div>
-        <div class="form-group">
-          <label for="reg-email">Correo electrónico</label>
-          <input class="form-control" type="email" id="reg-email" placeholder="ejemplo@correo.com" required />
-        </div>
-        <div class="form-group">
-          <label for="reg-phone">Teléfono</label>
-          <input class="form-control" type="tel" id="reg-phone" placeholder="3001234567" />
-        </div>
-        <div class="form-group">
-          <label for="reg-password">Contraseña</label>
-          <div class="password-field">
-            <input class="form-control" type="password" id="reg-password" placeholder="Mínimo 6 caracteres" required />
-            <button type="button" class="password-toggle">👁</button>
+
+          <div id="login-error" class="alert alert-error hidden">
+            <i data-lucide="circle-x"></i>
+             Credenciales incorrectas. Verifica tu correo y contraseña.
           </div>
-          <div class="strength-bar mt-2"><div class="strength-fill" id="strength-fill"></div></div>
-        </div>
-        <div class="form-group">
-          <label for="reg-confirm">Confirmar contraseña</label>
-          <div class="password-field">
-            <input class="form-control" type="password" id="reg-confirm" placeholder="Repite la contraseña" required />
-            <button type="button" class="password-toggle">👁</button>
+
+          <button type="submit" class="btn btn-primary btn-full" style="margin-top:4px">
+            Iniciar sesión <i data-lucide="arrow-right"></i>
+          </button>
+        </form>
+
+        <p class="text-center text-sm text-muted mt-4">
+          ¿No tienes cuenta?
+          <a href="#" id="go-register" style="color:var(--primary);font-weight:500"> Regístrate aquí</a>
+        </p>
+      </div>
+    </div>
+
+    <!-- Register -->
+    <div class="auth-form-side hidden" id="register-section">
+      <div class="auth-box">
+        <h1>Crear cuenta</h1>
+        <p class="auth-subtitle">Completa los datos para registrarte como paciente.</p>
+
+        <form id="register-form" novalidate>
+          <div class="form-row">
+            <div class="form-group">
+              <label for="reg-name">Nombres</label>
+              <input class="form-control" type="text" id="reg-name" placeholder="Ej. María" required />
+            </div>
+            <div class="form-group">
+              <label for="reg-lastname">Apellidos</label>
+              <input class="form-control" type="text" id="reg-lastname" placeholder="Ej. González" required />
+            </div>
           </div>
-        </div>
+          <div class="form-group">
+            <label for="reg-email">Correo electrónico</label>
+            <input class="form-control" type="email" id="reg-email" placeholder="ejemplo@correo.com" required />
+          </div>
+          <div class="form-group">
+            <label for="reg-phone">Teléfono</label>
+            <input class="form-control" type="tel" id="reg-phone" placeholder="3001234567" />
+          </div>
+          <div class="form-group">
+            <label for="reg-password">Contraseña</label>
+            <div class="password-field">
+              <input class="form-control" type="password" id="reg-password" placeholder="Mínimo 6 caracteres" required />
+              <button type="button" class="password-toggle"><i data-lucide="eye"></i></button>
+            </div>
+            <div class="strength-bar mt-2"><div class="strength-fill" id="strength-fill"></div></div>
+          </div>
+          <div class="form-group">
+            <label for="reg-confirm">Confirmar contraseña</label>
+            <div class="password-field">
+              <input class="form-control" type="password" id="reg-confirm" placeholder="Repite la contraseña" required />
+              <button type="button" class="password-toggle"><i data-lucide="eye"></i></button>
+            </div>
+          </div>
 
-        <div id="reg-error" class="alert alert-error hidden"></div>
+          <div id="reg-error" class="alert alert-error hidden"></div>
 
-        <button type="submit" class="btn btn-primary btn-full">Registrarme</button>
-      </form>
+          <button type="submit" class="btn btn-primary btn-full">Registrarme</button>
+        </form>
 
-      <p class="text-center text-sm text-muted mt-4">
-        ¿Ya tienes cuenta?
-        <a href="#" id="go-login" style="color:var(--primary);font-weight:500"> Inicia sesión</a>
-      </p>
+        <p class="text-center text-sm text-muted mt-4">
+          ¿Ya tienes cuenta?
+          <a href="#" id="go-login" style="color:var(--primary);font-weight:500"> Inicia sesión</a>
+        </p>
+      </div>
     </div>
   </div>
 </div><!-- /auth-view -->
 
 
-<!-- ══ APP VIEW ══════════════════════════════════════════════════ -->
+<!-- Vista de app -->
 <div id="app-view" class="app-layout" style="display:none">
 
   <!-- Sidebar -->
   <aside class="sidebar" id="sidebar">
     <div class="sidebar-logo">
-      <div class="logo-icon">🏥</div>
+      <div class="logo-icon">
+        <i data-lucide="hospital"></i>
+      </div>
       <div>
         <div class="logo-text">SaludYa</div>
         <div class="logo-sub">Sistema de citas</div>
@@ -157,10 +159,10 @@
     </div>
   </aside>
 
-  <!-- Main -->
+  <!-- Contenido principal -->
   <main class="main-content">
 
-    <!-- ─ Dashboard ─────────────────────────────────────────────── -->
+    <!-- Dashboard -->
     <div class="page" id="page-dashboard">
       <div class="page-header">
         <h1 class="page-title" id="dash-greeting">Bienvenido</h1>
@@ -170,21 +172,27 @@
       <div class="stats-grid">
         <div class="stat-card">
           <div class="stat-header">
-            <div class="stat-icon green">📅</div>
+            <div class="stat-icon green">
+              <i data-lucide="calendar-days"></i>
+            </div>
           </div>
           <div class="card-title">Próxima cita</div>
           <div id="stat-next"><div class="card-meta">—</div></div>
         </div>
         <div class="stat-card">
           <div class="stat-header">
-            <div class="stat-icon blue">🕐</div>
+            <div class="stat-icon blue">
+              <i data-lucide="clock-3"></i>
+            </div>
           </div>
           <div class="card-title">Citas activas</div>
           <div id="stat-total"><div class="card-meta">—</div></div>
         </div>
         <div class="stat-card">
           <div class="stat-header">
-            <div class="stat-icon orange">📋</div>
+            <div class="stat-icon orange">
+              <i data-lucide="clipboard-list" ></i>
+            </div>
           </div>
           <div class="card-title">Historial</div>
           <div id="stat-hist"><div class="card-meta">—</div></div>
@@ -199,7 +207,7 @@
       </div>
     </div>
 
-    <!-- ─ Book Appointment ───────────────────────────────────────── -->
+    <!-- Reservar cita -->
     <div class="page" id="page-book">
       <div class="page-header">
         <h1 class="page-title">Agendar Cita</h1>
@@ -209,7 +217,7 @@
       <div style="display:grid;grid-template-columns:1fr 1fr;gap:20px;align-items:start">
 
         <div>
-          <!-- Doctor select -->
+          <!-- Lista desplegable de médicos -->
           <div class="card mb-6">
             <div class="card-title mb-4" style="margin-bottom:12px">1. Selecciona el médico</div>
             <div class="form-group" style="margin:0">
@@ -219,7 +227,7 @@
             </div>
           </div>
 
-          <!-- Calendar -->
+          <!-- Calendario -->
           <div class="calendar-wrapper">
             <div class="calendar-header">
               <button class="cal-nav-btn" id="cal-prev">‹</button>
@@ -241,13 +249,13 @@
         </div>
 
         <div>
-          <!-- Slots -->
+          <!-- Disponibles -->
           <div class="card hidden" id="slots-section">
             <div class="slots-title" id="slots-title">Horarios disponibles</div>
             <div class="slots-grid" id="slots-container"></div>
           </div>
 
-          <!-- Confirm -->
+          <!-- Confirmar -->
           <div class="card" style="margin-top:16px" id="book-confirm-card">
             <div class="card-title mb-4" style="margin-bottom:12px">Confirmar reserva</div>
             <p class="text-sm text-muted" style="margin-bottom:14px">Selecciona una fecha y horario para continuar.</p>
@@ -260,7 +268,7 @@
       </div>
     </div>
 
-    <!-- ─ Appointments ───────────────────────────────────────────── -->
+    <!-- Citas -->
     <div class="page" id="page-appointments">
       <div class="page-header">
         <h1 class="page-title">Mis Citas</h1>
@@ -276,14 +284,14 @@
       <div class="appointments-list" id="apt-list"></div>
     </div>
 
-    <!-- ─ Doctor Schedule ────────────────────────────────────────── -->
+    <!-- Horarios médico -->
     <div class="page" id="page-schedule">
       <div class="page-header flex-between">
         <div>
           <h1 class="page-title">Mi Agenda</h1>
           <p class="page-subtitle">Define tus horarios disponibles por día.</p>
         </div>
-        <button class="btn btn-primary" id="save-schedule-btn">💾 Guardar cambios</button>
+        <button class="btn btn-primary" id="save-schedule-btn"> <i data-lucide="save"></i> Guardar cambios</button>
       </div>
 
       <div class="card" style="overflow-x:auto">
@@ -295,7 +303,7 @@
       </div>
     </div>
 
-    <!-- ─ Admin Users ─────────────────────────────────────────────── -->
+    <!-- Admin de usuarios -->
     <div class="page" id="page-users">
       <div class="page-header flex-between">
         <div>
@@ -305,7 +313,7 @@
       </div>
 
       <div class="search-bar">
-        <span class="search-icon">🔍</span>
+        <span class="search-icon"><i data-lucide="search" class="search-icon" ></i></span>
         <input type="text" id="user-search" placeholder="Buscar por nombre o correo…" />
       </div>
 
@@ -325,7 +333,7 @@
       </div>
     </div>
 
-    <!-- ─ Profile ────────────────────────────────────────────────── -->
+    <!-- Perfiles -->
     <div class="page" id="page-profile">
       <div class="page-header">
         <h1 class="page-title">Mi Perfil</h1>
@@ -362,7 +370,7 @@
       </div>
     </div>
 
-    <!-- ─ Help ───────────────────────────────────────────────────── -->
+    <!-- Ayuda -->
     <div class="page" id="page-help">
       <div class="page-header">
         <h1 class="page-title">Ayuda</h1>
@@ -383,22 +391,22 @@
         <hr class="section-divider" />
         <h3 style="font-size:16px;font-weight:600;margin-bottom:12px">Cuentas de acceso</h3>
         <div style="font-size:13px;background:var(--surface);border-radius:8px;padding:14px;line-height:2.2">
-          <div>👩 Paciente 1: <code>maria@mail.com</code> / <code>123456</code></div>
-          <div>👨 Paciente 2: <code>hugo@mail.com</code> / <code>123456</code></div>
-          <div>👩‍⚕️ Médico 1: <code>mfandino@saludya.com</code> / <code>med123</code></div>
-          <div>👨‍⚕️ Médico 2: <code>squintero@saludya.com</code> / <code>med123</code></div>
-          <div>🔐 Admin: <code>admin@saludya.com</code> / <code>admin123</code></div>
+          <div>* Paciente 1: <code>maria@mail.com</code> / <code>123456</code></div>
+          <div>* Paciente 2: <code>hugo@mail.com</code> / <code>123456</code></div>
+          <div>* Médico 1: <code>mfandino@saludya.com</code> / <code>med123</code></div>
+          <div>* Médico 2: <code>squintero@saludya.com</code> / <code>med123</code></div>
+          <div>* Admin: <code>admin@saludya.com</code> / <code>admin123</code></div>
         </div>
       </div>
     </div>
 
-  </main><!-- /main-content -->
-</div><!-- /app-view -->
+  </main><!-- /Contenido principal -->
+</div><!-- /Vista de app-->
 
 
-<!-- ══ MODALS ════════════════════════════════════════════════════ -->
+<!-- Modales -->
 
-<!-- Booking Confirmation -->
+<!-- Confirmación de cita -->
 <div class="modal-overlay" id="booking-modal">
   <div class="modal">
     <div class="modal-header">
@@ -419,7 +427,7 @@
   </div>
 </div>
 
-<!-- Cancel Appointment -->
+<!-- Cancelar cita-->
 <div class="modal-overlay" id="cancel-modal">
   <div class="modal">
     <div class="modal-header">
@@ -435,7 +443,7 @@
   </div>
 </div>
 
-<!-- Add Slot (Doctor) -->
+<!-- Agregar espacio (Médico) -->
 <div class="modal-overlay" id="add-slot-modal">
   <div class="modal">
     <div class="modal-header">
@@ -458,9 +466,13 @@
   </div>
 </div>
 
-<!-- Toast Container -->
+<!-- Contenedor Toast -->
 <div id="toast-container"></div>
 
 <script src="app.js"></script>
+<script src="https://unpkg.com/lucide@latest"></script>
+<script>
+  lucide.createIcons();
+</script>
 </body>
 </html>

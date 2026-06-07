@@ -10,14 +10,27 @@ const state = {
 
 /* Datos de muestra  */
 const USERS_DB = [
-  { id: 1, name: 'María González', email: 'maria@mail.com', password: '123456', role: 'patient', phone: '3001234567', status: 'active', initials: 'MG' },
-  { id: 2, name: 'Hugo Luna',       email: 'hugo@mail.com',  password: '123456', role: 'patient', phone: '3109876543', status: 'active', initials: 'HL' },
+  { id: 1, name: 'María González', email: 'maria@correo.com', password: '123456', role: 'patient', phone: '3001234567', status: 'active', initials: 'MG' },
+  { id: 2, name: 'Hugo Luna',       email: 'hugo@correo.com',  password: '123456', role: 'patient', phone: '3109876543', status: 'active', initials: 'HL' },
   { id: 3, name: 'Dra. M.F. Fandiño', email: 'mfandino@saludya.com', password: 'med123', role: 'doctor', specialty: 'Medicina General', phone: '3201112233', status: 'active', initials: 'MF' },
   { id: 4, name: 'Dr. Sergio Quintero', email: 'squintero@saludya.com', password: 'med123', role: 'doctor', specialty: 'Especialista', phone: '3154445566', status: 'active', initials: 'SQ' },
   { id: 5, name: 'Admin Sistema',   email: 'admin@saludya.com', password: 'admin123', role: 'admin', phone: '3000000001', status: 'active', initials: 'AS' },
   { id: 6, name: 'Nicolas Luna',   email: 'Nicolas.luna@saludya.com', password: 'Luna123', role: 'admin', phone: '3000000002', status: 'active', initials: 'NL' },
   { id: 7, name: 'Nicolas Reyes',   email: 'Nicolas.reyes@saludya.com', password: 'Reyes123', role: 'admin', phone: '3000000003', status: 'active', initials: 'NR' },
 ];
+
+function refreshIcons() {
+  requestAnimationFrame(() => {
+    lucide.createIcons();
+
+    document.querySelectorAll('.apt-icon-green').forEach(el => {
+      const svg = el.closest('svg');
+      if (svg) {
+        svg.setAttribute('stroke', '#155E43');
+      }
+    });
+  });
+}
 
 // Almacenamiento en localStorage
 function loadDB() {
@@ -143,40 +156,41 @@ function buildSidebar() {
     });
     nav.appendChild(secEl);
   });
+  lucide.createIcons();
 }
 
 function getSidebarSections(role) {
   if (role === 'patient') return [
     { label: 'Control de Citas', items: [
-      { id: 'book', icon: '📅', label: 'Agendar cita' },
-      { id: 'appointments', icon: '🕐', label: 'Mis citas', badge: countActivePtApts() },
+      { id: 'book', icon: '<i data-lucide="calendar"></i>', label: 'Agendar cita' },
+      { id: 'appointments', icon: '<i data-lucide="clock"></i>', label: 'Mis citas', badge: countActivePtApts() },
     ]},
     { label: 'Paciente', items: [
-      { id: 'dashboard', icon: '🏠', label: 'Inicio' },
-      { id: 'profile', icon: '👤', label: 'Mis datos' },
+      { id: 'dashboard', icon: '<i data-lucide="home"></i>', label: 'Inicio' },
+      { id: 'profile', icon: '<i data-lucide="user"></i>', label: 'Mis datos' },
     ]},
     { label: 'Sistema', items: [
-      { id: 'help', icon: 'ℹ️', label: 'Ayuda' },
+      { id: 'help', icon: '<i data-lucide="info"></i>', label: 'Ayuda' },
     ]},
   ];
   if (role === 'doctor') return [
     { label: 'Agenda', items: [
-      { id: 'dashboard', icon: '🏠', label: 'Inicio' },
-      { id: 'schedule', icon: '📋', label: 'Mi Agenda' },
-      { id: 'appointments', icon: '🕐', label: 'Citas del día' },
+      { id: 'dashboard', icon: '<i data-lucide="home"></i>', label: 'Inicio' },
+      { id: 'schedule', icon: '<i data-lucide="calendar-check"></i>', label: 'Mi Agenda' },
+      { id: 'appointments', icon: '<i data-lucide="clock"></i>', label: 'Citas del día' },
     ]},
     { label: 'Sistema', items: [
-      { id: 'profile', icon: '👤', label: 'Mi perfil' },
+      { id: 'profile', icon: '<i data-lucide="user"></i>', label: 'Mi perfil' },
     ]},
   ];
   if (role === 'admin') return [
     { label: 'Administración', items: [
-      { id: 'dashboard', icon: '🏠', label: 'Panel' },
-      { id: 'users', icon: '👥', label: 'Usuarios' },
-      { id: 'appointments', icon: '📅', label: 'Todas las citas' },
+      { id: 'dashboard', icon: '<i data-lucide="home"></i>', label: 'Panel' },
+      { id: 'users', icon: '<i data-lucide="users"></i>', label: 'Usuarios' },
+      { id: 'appointments', icon: '<i data-lucide="calendar-days"></i>', label: 'Todas las citas' },
     ]},
     { label: 'Sistema', items: [
-      { id: 'profile', icon: '👤', label: 'Mi perfil' },
+      { id: 'profile', icon: '<i data-lucide="user"></i>', label: 'Mi perfil' },
     ]},
   ];
   return [];
@@ -203,7 +217,7 @@ function initDashboard() {
     const nextApt = upcoming[0];
     const nextDoc = nextApt ? users.find(u2 => u2.id === nextApt.doctorId) : null;
 
-    document.getElementById('dash-greeting').textContent = `¡Hola, ${u.name.split(' ')[0]}! 👋`;
+    document.getElementById('dash-greeting').textContent = `¡Hola, ${u.name.split(' ')[0]}! `;
     document.getElementById('dash-subtitle').textContent = 'Bienvenido a tu portal de citas médicas.';
 
     document.getElementById('stat-next').innerHTML = nextApt
@@ -217,6 +231,7 @@ function initDashboard() {
     const recentEl = document.getElementById('dash-recent');
     if (upcoming.length === 0) {
       recentEl.innerHTML = `<div class="empty-state"><div class="empty-icon">📭</div><p>No tienes citas próximas.</p></div>`;
+      refreshIcons();
     } else {
       recentEl.innerHTML = upcoming.slice(0,3).map(a => {
         const doc = users.find(u2 => u2.id === a.doctorId);
@@ -225,6 +240,7 @@ function initDashboard() {
       recentEl.querySelectorAll('.btn-cancel-apt').forEach(btn => {
         btn.addEventListener('click', () => confirmCancel(btn.dataset.id));
       });
+      refreshIcons();
     }
   }
 
@@ -238,12 +254,15 @@ function initDashboard() {
     const recentEl = document.getElementById('dash-recent');
     if (todayApts.length === 0) {
       recentEl.innerHTML = `<div class="empty-state"><div class="empty-icon">🎉</div><p>Sin citas programadas para hoy.</p></div>`;
+      refreshIcons();
     } else {
       recentEl.innerHTML = todayApts.map(a => {
         const pat = users.find(u2 => u2.id === a.patientId);
-        return `<div class="appointment-card"><div class="apt-icon">👤</div><div class="apt-info"><div class="apt-doctor">${pat?.name||'Paciente'}</div><div class="apt-detail">${a.time} · ${a.date}</div></div><span class="badge badge-available">Activa</span></div>`;
+        return `<div class="appointment-card"><div class="apt-icon"><i data-lucide="user"></i></div><div class="apt-info"><div class="apt-doctor">${pat?.name||'Paciente'}</div><div class="apt-detail">${a.time} · ${a.date}</div></div><span class="badge badge-available">Activa</span></div>`;
       }).join('');
+      refreshIcons();
     }
+    
   }
 
   if (role === 'admin') {
@@ -279,6 +298,7 @@ function initBookPage() {
   clearSlots();
   document.getElementById('confirm-book-btn').disabled = true;
 }
+
 
 let calOffset = 0;
 function renderCalendar() {
@@ -364,6 +384,7 @@ function renderSlots(dateStr, docId, apts, docSchedule) {
 
   if (slots.length === 0) {
     container.innerHTML = `<p class="text-muted text-sm">Sin horarios disponibles para este día.</p>`;
+    refreshIcons();
     return;
   }
 
@@ -371,6 +392,7 @@ function renderSlots(dateStr, docId, apts, docSchedule) {
     const occupied = occupiedSlots.includes(t);
     return `<button class="slot-btn ${occupied ? 'occupied' : ''}" data-time="${t}" ${occupied ? 'disabled' : ''}>${t}</button>`;
   }).join('');
+  refreshIcons();
 
   container.querySelectorAll('.slot-btn:not(.occupied)').forEach(btn => {
     btn.addEventListener('click', () => {
@@ -456,7 +478,8 @@ function renderAppointments() {
 
   const container = document.getElementById('apt-list');
   if (filtered.length === 0) {
-    container.innerHTML = `<div class="empty-state"><div class="empty-icon">📭</div><p>No hay citas en esta categoría.</p></div>`;
+    container.innerHTML = `<div class="empty-state"><div class="empty-icon"><i data-lucide="mailbox"></i></div><p>No hay citas en esta categoría.</p></div>`;
+    lucide.createIcons();
     return;
   }
 
@@ -465,6 +488,7 @@ function renderAppointments() {
     const other = users.find(u2 => u2.id === otherId);
     return aptCardHTML(a, other, u.role !== 'doctor' && a.status === 'active' && a.date >= today);
   }).join('');
+  setTimeout(() => lucide.createIcons(), 0);
 
   container.querySelectorAll('.btn-cancel-apt').forEach(btn => {
     btn.addEventListener('click', () => confirmCancel(btn.dataset.id));
@@ -474,22 +498,22 @@ function renderAppointments() {
 function aptCardHTML(a, person, showCancel) {
   const badgeCls = a.status === 'active' ? 'badge-available' : 'badge-cancelled';
   const badgeTxt = a.status === 'active' ? 'Activa' : 'Cancelada';
+
   return `<div class="appointment-card">
-    <div class="apt-icon">📅</div>
+    <div class="apt-icon">
+      <i data-lucide="calendar-days" class="apt-icon-green"></i>
+    </div>
+
     <div class="apt-info">
       <div class="apt-doctor">${person?.name || '—'}</div>
       <div class="apt-detail">${formatDate(a.date)} · ${a.time}${person?.specialty ? ' · '+person.specialty : ''}</div>
     </div>
+
     <div class="apt-actions">
       <span class="badge ${badgeCls}">${badgeTxt}</span>
       ${showCancel ? `<button class="btn btn-danger btn-sm btn-cancel-apt" data-id="${a.id}">✕ Cancelar</button>` : ''}
     </div>
   </div>`;
-}
-
-function confirmCancel(aptId) {
-  document.getElementById('cancel-apt-id').value = aptId;
-  openModal('cancel-modal');
 }
 
 function doCancelAppointment() {
@@ -730,13 +754,20 @@ document.addEventListener('DOMContentLoaded', () => {
   });
 
   // Mostrar - ocultar pass
-  document.querySelectorAll('.password-toggle').forEach(btn => {
-    btn.addEventListener('click', () => {
-      const input = btn.previousElementSibling;
-      input.type = input.type === 'password' ? 'text' : 'password';
-      btn.textContent = input.type === 'password' ? '👁' : '🙈';
-    });
+document.querySelectorAll('.password-toggle').forEach(btn => {
+  btn.addEventListener('click', () => {
+    const input = btn.previousElementSibling;
+    const isHidden = input.type === 'password';
+
+    input.type = isHidden ? 'text' : 'password';
+
+    btn.innerHTML = isHidden
+      ? '<i data-lucide="eye-off"></i>'
+      : '<i data-lucide="eye"></i>';
+
+    refreshIcons();
   });
+});
 
   // Enlaces de navegación autenticacion
   document.getElementById('go-register').addEventListener('click', (e) => {
